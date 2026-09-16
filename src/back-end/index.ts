@@ -17,6 +17,12 @@ app.listen(port, () => {
   console.log(`Example app in TypeScript listening on port ${port}`);
 }); 
 
+// Define a route handler for health check endpoint
+app.get('/api/health', (_req: express.Request, res: express.Response) => {
+  const response: { status: string } = { status: 'ok' };
+  res.json(response);
+});
+
 // Define a route handler for fetching popular movies from TMDB API
 app.get('/api/movies/popular', async (_req: express.Request, res: express.Response) => {
   try {
