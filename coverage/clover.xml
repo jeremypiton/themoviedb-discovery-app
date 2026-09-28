@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1790610561705" clover="3.2.0">
+  <project timestamp="1790610561705" name="All files">
+    <metrics statements="25" coveredstatements="10" conditionals="8" coveredconditionals="0" methods="5" coveredmethods="2" elements="38" coveredelements="12" complexity="0" loc="25" ncloc="25" packages="1" files="4" classes="4"/>
+    <file name="constants.ts" path="/workspaces/themoviedb-discovery-app/src/back-end/constants.ts">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="8" count="1" type="stmt"/>
+    </file>
+    <file name="health-api.ts" path="/workspaces/themoviedb-discovery-app/src/back-end/health-api.ts">
+      <metrics statements="3" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="8" count="0" type="stmt"/>
+      <line num="9" count="0" type="stmt"/>
+    </file>
+    <file name="index.ts" path="/workspaces/themoviedb-discovery-app/src/back-end/index.ts">
+      <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+    </file>
+    <file name="movies-api.ts" path="/workspaces/themoviedb-discovery-app/src/back-end/movies-api.ts">
+      <metrics statements="13" coveredstatements="1" conditionals="8" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="14" count="0" type="stmt"/>
+      <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="17" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="18" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="19" count="0" type="stmt"/>
+      <line num="20" count="0" type="stmt"/>
+      <line num="27" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="28" count="0" type="stmt"/>
+      <line num="31" count="0" type="stmt"/>
+      <line num="32" count="0" type="stmt"/>
+      <line num="34" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>
