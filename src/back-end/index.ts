@@ -13,6 +13,10 @@ app.get('/', (_req: express.Request, res: express.Response) => {
   res.send('Hello World from TypeScript!');
 });
 
+app.get('/api/health', (_req: express.Request, res: express.Response) => {
+  res.json({ status: 'ok' });
+});
+
 // Start the server and listen on the specified port
 app.listen(port, () => {
   console.log(`Example app in TypeScript listening on port ${port}`);
