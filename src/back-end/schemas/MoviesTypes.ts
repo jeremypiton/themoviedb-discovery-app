@@ -23,6 +23,22 @@ export type TmdbMovie = {
   vote_average: number;
   vote_count: number;
 };
+
+export type TmdbMovieDetails = TmdbMovie & {
+  genres: Array<{ id: number; name: string }>;
+  tagline: string | null;
+  runtime: number | null;
+  status: string;
+  homepage: string;
+  budget: number;
+  revenue: number;
+  production_companies: Array<{
+    id: number;
+    logo_path: string | null;
+    name: string;
+    origin_country: string;
+  }>;
+};
 // TypeScript type for the API response when fetching movies, containing an array of supported Movie objects.
 export type MoviesApiResponse = {
   page: number;
@@ -33,6 +49,8 @@ export type MoviesApiResponse = {
 
 // TypeScript type for the supported movie format used in our application, omitting 'adult' and 'video' properties from the TmdbMovie type.
 export type Movie = Omit<TmdbMovie, 'adult' | 'video'>;
+
+export type MovieDetails = Omit<TmdbMovieDetails, 'adult' | 'video' | 'production_companies'>;
 
 // TypeScript type for the API response when fetching popular movies, containing an array of supported Movie objects.
 export type ApiErrorResponse = {
