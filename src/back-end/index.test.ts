@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the necessary modules and functions
-const { getMock, listenMock } = vi.hoisted(() => ({
+const { fetchMock, getMock, listenMock } = vi.hoisted(() => ({
+  fetchMock: vi.fn(),
   getMock: vi.fn(),
   listenMock: vi.fn(),
 }));
@@ -16,6 +17,8 @@ vi.mock("express", () => ({
 vi.mock("./config", () => ({
   tmdbAccessToken: "test-access-token",
 }));
+
+vi.stubGlobal("fetch", fetchMock);
 
 // Import the code under test after setting up the mocks
 import "./index";
@@ -46,12 +49,63 @@ describe("back-end server routes", () => {
   });
 
   describe("route registration", () => {
+    it("registers the /api/movies/:id route", () => {
+      expect(routeHandlers.has("/api/movies/:id")).toBe(true);
+    });
+
     it("registers the /api/movies/popular route", () => {
       expect(routeHandlers.has("/api/movies/popular")).toBe(true);
     });
 
     it("registers the /api/health route", () => {
       expect(routeHandlers.has("/api/health")).toBe(true);
+    });
+  });
+
+  describe("movie details route", () => {
+    it.each([
+      ["12345", "First movie"],
+      ["67890", "Second movie"],
+    ])("returns transformed details for movie %s", async (movieId, title) => {
+      fetchMock.mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            adult: true,
+            id: Number(movieId),
+            production_companies: [{ id: 1, name: "Production company" }],
+            title,
+            video: false,
+          }),
+          { status: 200 },
+        ),
+      );
+
+      const response = {
+        json: vi.fn(),
+        status: vi.fn(),
+      };
+      const detailHandler = routeHandlers.get("/api/movies/:id");
+
+      await detailHandler?.(
+        {
+          params: { id: movieId },
+          query: { language: "fr-FR" },
+        } as unknown as Request,
+        response as unknown as Response,
+      );
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        `https://api.themoviedb.org/3/movie/${movieId}?language=fr-FR`,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: "Bearer test-access-token",
+          }),
+        }),
+      );
+      expect(response.json).toHaveBeenCalledWith({
+        id: Number(movieId),
+        title,
+      });
     });
   });
 });
