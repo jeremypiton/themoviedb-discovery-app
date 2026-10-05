@@ -1,4 +1,7 @@
 :root {
+  --ink-strong: #1c2238;
+  --line: #cbd8e4;
+  --surface: #fdfcf9;
   color: #1c2238;
   background: #e7f4fa;
   font-family: "Avenir Next", "Segoe UI", sans-serif;
