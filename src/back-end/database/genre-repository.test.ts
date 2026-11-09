@@ -2,6 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { describe, expect, it } from 'vitest';
 import { initializeSchema } from './schema';
 import {
+  deleteUnusedGenres,
   getGenreById,
   getGenres,
   saveGenre,
@@ -83,6 +84,34 @@ describe('genre-repository.ts', () => {
     try {
       expect(() => saveGenres(database, failingGenres())).toThrow(error);
       expect(getGenres(database)).toEqual([]);
+    } finally {
+      database.close();
+    }
+  });
+
+  it('deletes genres that are not used by a movie', () => {
+    const database = new DatabaseSync(':memory:');
+    initializeSchema(database);
+
+    try {
+      saveGenres(database, [
+        { id: 18, name: 'Drama' },
+        { id: 35, name: 'Comedy' },
+      ]);
+      database
+        .prepare(
+          `INSERT INTO movies (
+            id, title, original_title, original_language, overview, collected_at
+          ) VALUES (?, ?, ?, ?, ?, ?)`,
+        )
+        .run(1, 'Movie', 'Movie', 'en', 'Overview', '2026-01-01');
+      database
+        .prepare('INSERT INTO movie_genres (movie_id, genre_id) VALUES (?, ?)')
+        .run(1, 18);
+
+      deleteUnusedGenres(database);
+
+      expect(getGenres(database)).toEqual([{ id: 18, name: 'Drama' }]);
     } finally {
       database.close();
     }

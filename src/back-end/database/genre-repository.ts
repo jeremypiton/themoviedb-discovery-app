@@ -57,3 +57,13 @@ export function getGenres(database: DatabaseSync): Genre[] {
     .prepare('SELECT id, name FROM genres ORDER BY id')
     .all() as unknown as Genre[];
 }
+
+/**
+ * Deletes genres that are not referenced by any movie.
+ */
+export function deleteUnusedGenres(database: DatabaseSync): void {
+  database.exec(`
+    DELETE FROM genres
+    WHERE id NOT IN (SELECT genre_id FROM movie_genres)
+  `);
+}
