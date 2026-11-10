@@ -2,6 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { describe, expect, it } from 'vitest';
 import { initializeSchema } from './schema';
 import {
+  deleteUnreferencedCountries,
   getCountryByCode,
   getCountries,
   saveCountry,
@@ -90,6 +91,29 @@ describe('country-repository.ts', () => {
     try {
       expect(() => saveCountries(database, failingCountries())).toThrow(error);
       expect(getCountries(database)).toEqual([]);
+    } finally {
+      database.close();
+    }
+  });
+
+  it('deletes only countries without production references', () => {
+    const database = new DatabaseSync(':memory:');
+    initializeSchema(database);
+
+    try {
+      saveCountries(database, [
+        { code: 'FR', name: 'France' },
+        { code: 'US', name: 'United States' },
+      ]);
+      database.exec(`
+        INSERT INTO movies (id, title, original_title, original_language, overview, collected_at)
+        VALUES (1, 'Movie', 'Movie', 'en', 'Overview', '2026-01-01');
+        INSERT INTO production_countries (movie_id, country_code)
+        VALUES (1, 'FR');
+      `);
+
+      expect(deleteUnreferencedCountries(database)).toBe(1);
+      expect(getCountries(database)).toEqual([{ code: 'FR', name: 'France' }]);
     } finally {
       database.close();
     }

@@ -61,3 +61,20 @@ export function getCountries(database: DatabaseSync): Country[] {
     .prepare('SELECT code, name FROM countries ORDER BY code ASC')
     .all() as unknown as Country[];
 }
+
+/**
+ * Supprime les pays qui ne sont associés à aucun film.
+ */
+export function deleteUnreferencedCountries(database: DatabaseSync): number {
+  const result = database
+    .prepare(
+      `DELETE FROM countries
+       WHERE NOT EXISTS (
+         SELECT 1 FROM production_countries
+         WHERE production_countries.country_code = countries.code
+       )`,
+    )
+    .run();
+
+  return Number(result.changes);
+}
