@@ -60,7 +60,9 @@ Le composant [HelloWorld](./src/front-end/components/HelloWorld/HelloWorld.tsx) 
 - Ses [stories](./src/front-end/components/HelloWorld/HelloWorld.stories.tsx) présentent le message par défaut, un message personnalisé et le thème sombre. Le contrôle `message` permet de modifier le texte dans Storybook. L'addon de thèmes applique `data-theme` à un conteneur propre à chaque story, sans modifier la racine du document : les aperçus clairs et sombres peuvent ainsi coexister sur la page Docs. La story `DarkTheme` fixe `globals.theme` à `dark` ; les autres stories utilisent le thème sélectionné dans la barre d'outils (clair par défaut).
 - Ses [tests unitaires](./src/front-end/components/HelloWorld/HelloWorld.test.tsx) vérifient ces deux comportements ainsi que la coexistence des stories claires et sombres avec Vitest et React Testing Library, en suivant le pattern Arrange-Act-Assert et en nettoyant le DOM après chaque test.
 
-Pour ajouter un composant, créez ses fichiers `NomDuComposant.stories.tsx` et `NomDuComposant.test.tsx` à côté de celui-ci dans `src/front-end/`. Utilisez les types `Meta` et `StoryObj` de Storybook pour les stories et vérifiez les sorties visibles avec les requêtes accessibles de React Testing Library.
+La page [DashboardPage](./src/front-end/pages/DashboardPage/DashboardPage.tsx) est également disponible dans Storybook sous `Dashboard/DashboardPage`. Ses stories `NoWidgets` et `NoWidgetsDarkTheme` permettent de visualiser l'état initial du tableau de bord dans les deux thèmes.
+
+Pour ajouter un widget, créez ses fichiers `NomDuWidget.stories.tsx` et `NomDuWidget.test.tsx` à côté du composant dans `src/front-end/`. Utilisez les types `Meta` et `StoryObj` de Storybook, puis créez une story pour chaque état visuel pertinent (par exemple `Default`, `Loading`, `Empty` ou `Error`) avec des données représentatives. Les stories utilisant le routage doivent être enveloppées dans un `MemoryRouter`. Vérifiez les sorties visibles avec les requêtes accessibles de React Testing Library.
 
 Pour générer une version statique de Storybook :
 
